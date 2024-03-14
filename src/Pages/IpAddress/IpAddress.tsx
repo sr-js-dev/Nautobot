@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
-import { Box, Grid, Modal, useStepContext, Typography } from '@mui/material';
+import { Box, Grid, Modal } from '@mui/material';
 import { IpAddressColumns } from './Columns';
+import { Add as AddIcon } from '@mui/icons-material';
 import {
   DataTable,
   Card,
@@ -32,8 +33,9 @@ import { useAxios } from 'Lib/useAxios';
 import { API_URLS } from 'Utils/api-urls';
 import { QueryKeys } from 'Utils/query-key';
 import { InputElementType } from 'Utils/input-element-type';
+import { GridPaginationModel } from '@mui/x-data-grid';
 
-type GetTableDataQueryKey = [string, number | null];
+type GetTableDataQueryKey = [string, any | null];
 
 interface FormData {
   newIpAddress: string;
@@ -83,13 +85,14 @@ const style = {
 };
 
 export const IpAddress: React.FC = () => {
-  const [currentTablePage, setCurrentTablePage] = useState<number>(1);
+  const [currentTablePage, setCurrentTablePage] = useState<GridPaginationModel>({page: 0, pageSize: 25});
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const [ipTabvalue, setIpTabValue] = useState<string>('1');
   const [natIpTabvalue, setNatIpTabValue] = useState<string>('1');
   const [ipAddressData, setIPaddressData] = useState<any>([]);
+  const [rowCount, setRowCount] = useState<number>(0)
 
   const handleIpTabValue = (
     event: React.SyntheticEvent,
@@ -159,7 +162,8 @@ export const IpAddress: React.FC = () => {
     queryKey: GetTableDataQueryKey;
   }): Promise<any> => {
     const [, currentPage] = queryKey;
-    const data = await axios.get(`${API_URLS.GET_TABLE_DATA}${currentPage}`);
+    const data = await axios.get(`${API_URLS.GET_TABLE_DATA}?limit=${currentPage.pageSize}&depth=${currentPage.page + 1}`);
+    setRowCount(data.data.count)
     const ipAddressDataList = data.data.results?.map(
       (item: any, index: number) => {
         let ipAddress: any = {
@@ -180,7 +184,7 @@ export const IpAddress: React.FC = () => {
     return ipAddressDataList;
   };
 
-  const { data, isError, error } = useQuery({
+  const { data, isError, error, isLoading } = useQuery({
     queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage],
     queryFn: () =>
       getTableData({ queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage] }),
@@ -188,6 +192,7 @@ export const IpAddress: React.FC = () => {
 
   useEffect(() => {
     if (isError) console.log(error);
+    console.log('aaaa', data)
     if (data) setIPaddressData(data);
   }, [isError, error, data, setIPaddressData]);
 
@@ -203,17 +208,28 @@ export const IpAddress: React.FC = () => {
         gap={2}
       >
         <Grid item display={'flex'} flexDirection={'column'}>
-          <Box display={'flex'} justifyContent={'end'}>
+          <Box display={'flex'} justifyContent={'end'} py={2} >
             <Button
-              color='secondary'
+              color='primary'
               variant='contained'
               size='large'
               onClick={handleOpenModal}
             >
-              ADD
+              <AddIcon />
+              Add
             </Button>
           </Box>
-          <DataTable rows={ipAddressData} columns={IpAddressColumns} />
+          <Box height={600}>
+            <DataTable
+              loading={isLoading}
+              rows={ipAddressData}
+              columns={IpAddressColumns}
+              rowCount={rowCount}
+              onPageModelChange={(pageModel)=>setCurrentTablePage(pageModel)}
+              currentTablePage={currentTablePage}
+              pageSizeOptions={[25, 50, 100, 250, 500, 1000]}
+            />
+          </Box>
         </Grid>
       </Grid>
       <Modal

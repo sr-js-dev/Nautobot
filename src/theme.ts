@@ -20,15 +20,16 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
-export const primary = '#5FB158'
-const secondary = '#4472C4'
-const intermediate = '#404040'
-const brandGreen = '#5FB158'
+export const primary = '#0582DC'
+const secondary = '#184783'
+const intermediate = '#262626'
+const brandGreen = '#169F32'
 
 const theme = createTheme({
   palette: {
     primary: {
       main: `${primary}`,
+      light: '#184783'
     },
     secondary: {
       light: '#6194c9',
