@@ -1,25 +1,156 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import {
+  TextField,
+  Autocomplete,
+  FormControl,
+  MenuItem,
+  Select,
+} from '@mui/material';
+import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base';
+import { styled } from '@mui/system';
 import { InputElementProps } from './type';
 
-export const InputElement: React.FC<InputElementProps> = ({ name, size, fullWidth }) => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+export const InputElement: React.FC<InputElementProps> = ({
+  name,
+  style,
+  type,
+  option,
+}) => {
+  const blue = {
+    100: '#DAECFF',
+    200: '#b6daff',
+    400: '#3399FF',
+    500: '#007FFF',
+    600: '#0072E5',
+    900: '#003A75',
+  };
 
-  return (
-    <Controller
-      name={name}
-      render={({ field }) => (
-        <TextField
-          {...field}  
-          {...register(name)}
-          size={size ?? 'medium'}
-          fullWidth={fullWidth}
-        />
-      )}
-    />
+  const grey = {
+    50: '#F3F6F9',
+    100: '#E5EAF2',
+    200: '#DAE2ED',
+    300: '#C7D0DD',
+    400: '#B0B8C4',
+    500: '#9DA8B7',
+    600: '#6B7A90',
+    700: '#434D5B',
+    800: '#303740',
+    900: '#1C2025',
+  };
+
+  const Textarea = styled(BaseTextareaAutosize)(
+    ({}) => `
+    box-sizing: border-box;
+    width: 100%;
+    min-height:'200px';
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: ${grey[900]};
+    background: '#fff';
+    border: 1px solid ${grey[700]};
+    box-shadow: 0px 2px 2px ${grey[50]};
+
+    &:hover {
+      border-color: ${blue[400]};
+    }
+
+    &:focus {
+      border-color: ${blue[400]};
+      box-shadow: 0 0 0 3px ${blue[200]};
+    }
+
+    // firefox
+    &:focus-visible {
+      outline: 0;
+    }
+  `
   );
+
+  const { register, setValue, getValues } = useFormContext();
+
+  let InputComponent;
+  const _options = option || [];
+
+  const formData = getValues();
+
+  switch (type) {
+    case 'text-field':
+      InputComponent = (
+        <Controller
+          name={name}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              {...register(name)}
+              size={style.size}
+              fullWidth={style.fullWidth}
+            />
+          )}
+        />
+      );
+      break;
+    case 'autocomplete':
+      InputComponent = (
+        <Autocomplete
+          disablePortal
+          id={name}
+          size={style.size}
+          options={top100Films}
+          getOptionLabel={(option) => option.title}
+          onChange={(event, option) => setValue(name, option)}
+          renderInput={(params) => <TextField {...params} />}
+        />
+      );
+      break;
+    case 'select':
+      InputComponent = (
+        <FormControl fullWidth={style.fullWidth}>
+          <Controller
+            name={name}
+            render={({ field }) => (
+              <Select
+                {...field}
+                {...register(name)}
+                size={style.size}
+                id={name}
+              >
+                {_options.map((item, index) => (
+                  <MenuItem key={index} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
+      );
+      break;
+    case 'textarea':
+      InputComponent = (
+        <Controller
+          name={name}
+          render={({ field }) => (
+            <Textarea {...field} aria-label='empty textarea' />
+          )}
+        />
+      );
+      break;
+    default:
+      InputComponent = null;
+  }
+  return InputComponent;
 };
+
+const top100Films = [
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 },
+];
