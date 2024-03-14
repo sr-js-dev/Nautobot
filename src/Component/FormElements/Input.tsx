@@ -9,7 +9,7 @@ export const Input: React.FC<InputProps> = ({ label, name, size, fullWidth, opti
         <Typography align='right'>{label}</Typography>
       </Grid>
       <Grid item xs={8}>
-        <InputElement name={name} ssize={size} fullWidth={fullWidth} type={type} option={option} />
+        <InputElement name={name} size={size} fullWidth={fullWidth} type={type} option={option} />
       </Grid>
     </Grid>
   );

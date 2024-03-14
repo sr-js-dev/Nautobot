@@ -13,9 +13,10 @@ import { InputElementProps } from './type';
 
 export const InputElement: React.FC<InputElementProps> = ({
   name,
-  style,
   type,
   option,
+  size,
+  fullWidth
 }) => {
   const blue = {
     100: '#DAECFF',
@@ -86,8 +87,8 @@ export const InputElement: React.FC<InputElementProps> = ({
             <TextField
               {...field}
               {...register(name)}
-              size={style.size}
-              fullWidth={style.fullWidth}
+              size={size}
+              fullWidth={fullWidth}
             />
           )}
         />
@@ -98,9 +99,9 @@ export const InputElement: React.FC<InputElementProps> = ({
         <Autocomplete
           disablePortal
           id={name}
-          size={style.size}
-          options={top100Films}
-          getOptionLabel={(option) => option.title}
+          size={size}
+          options={_options}
+          getOptionLabel={(option) => option.label}
           onChange={(event, option) => setValue(name, option)}
           renderInput={(params) => <TextField {...params} />}
         />
@@ -108,14 +109,14 @@ export const InputElement: React.FC<InputElementProps> = ({
       break;
     case 'select':
       InputComponent = (
-        <FormControl fullWidth={style.fullWidth}>
+        <FormControl fullWidth={fullWidth}>
           <Controller
             name={name}
             render={({ field }) => (
               <Select
                 {...field}
                 {...register(name)}
-                size={style.size}
+                size={size}
                 id={name}
               >
                 {_options.map((item, index) => (
@@ -144,13 +145,3 @@ export const InputElement: React.FC<InputElementProps> = ({
   }
   return InputComponent;
 };
-
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-];

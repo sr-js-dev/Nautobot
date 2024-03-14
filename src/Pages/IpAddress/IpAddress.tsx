@@ -216,7 +216,7 @@ export const IpAddress: React.FC = () => {
         </Grid>
       </Grid>
       <Modal
-        open={openModal}
+        open={true}
         onClose={handleCloseModal}
         aria-labelledby='scrollable-modal-title'
         aria-describedby='scrollable-modal-description'
@@ -238,7 +238,8 @@ export const IpAddress: React.FC = () => {
                       name='newIpAddress'
                       label='Address'
                       type={InputElementType.TextField}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <input type='submit' />
 
@@ -247,34 +248,39 @@ export const IpAddress: React.FC = () => {
                       label='Namespace'
                       option={nameSpace}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='newIpType'
                       label='Type'
                       option={ipType}
                       type={InputElementType.Select}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='newIpStatus'
                       label='Status'
                       option={ipstatus}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='newIpRole'
                       label='Role'
                       option={ipRole}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='newIpDns'
                       label='DNS'
                       type={InputElementType.TextField}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='newIpDescription'
@@ -290,15 +296,14 @@ export const IpAddress: React.FC = () => {
                       label='Tenant Group'
                       option={tenantGroup}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='newIpTenant'
                       label='Tenant'
                       option={tenant}
                       type={InputElementType.Autocomplete}
-                      name='address'
-                      label='Address'
                       size='small'
                       fullWidth
                     />
@@ -315,14 +320,16 @@ export const IpAddress: React.FC = () => {
                           label='Location'
                           option={location}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                         <Input
                           name='newIpRack'
                           label='Rack'
                           option={rack}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                         <Input
                           name='newIpDevice'
@@ -335,8 +342,6 @@ export const IpAddress: React.FC = () => {
                           label='IP Address'
                           option={ip}
                           type={InputElementType.Autocomplete}
-                          name='description'
-                          label='Description'
                           size='small'
                           fullWidth
                         />
@@ -347,23 +352,22 @@ export const IpAddress: React.FC = () => {
                           label='Cluster'
                           option={cluster}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                         <Input
                           name='newIpVm'
                           label='Virtual Machine'
                           option={vm}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                         <Input
                           name='newIpVmIp'
                           label='IP Address'
                           option={ip}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
-                          name='description'
-                          label='Description'
                           size='small'
                           fullWidth
                         />
@@ -374,16 +378,14 @@ export const IpAddress: React.FC = () => {
                           label='VRF'
                           option={vrf}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                         <Input
                           name='ipAddress'
                           label='IP Address'
                           option={ip}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
-                          name='description'
-                          label='Description'
                           size='small'
                           fullWidth
                         />
@@ -395,7 +397,8 @@ export const IpAddress: React.FC = () => {
                       name='newIpNote'
                       label='Note'
                       type={InputElementType.Textarea}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='Tags'>
@@ -403,7 +406,8 @@ export const IpAddress: React.FC = () => {
                       name='tags'
                       label='Tags'
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                 </TabPanel>
@@ -413,47 +417,54 @@ export const IpAddress: React.FC = () => {
                       name='bulkIpAddress'
                       label='Address'
                       type={InputElementType.TextField}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='bulkIpNamespace'
                       label='Namespace'
                       option={nameSpace}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='bulkIpType'
                       label='Type'
                       option={ipType}
                       type={InputElementType.Select}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='bulkIpStatus'
                       label='Status'
                       option={ipstatus}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='bulkIpRole'
                       label='Role'
                       option={ipRole}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='bulkIpDns'
                       label='DNS'
                       type={InputElementType.TextField}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='bulkIpDescription'
                       label='Description'
                       type={InputElementType.TextField}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='Tenancy'>
@@ -462,14 +473,16 @@ export const IpAddress: React.FC = () => {
                       label='Tenant Group'
                       option={tenantGroup}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <Input
                       name='bulkIpTenant'
                       label='Tenant'
                       option={tenant}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='Note'>
@@ -477,7 +490,6 @@ export const IpAddress: React.FC = () => {
                       name='bulkIpNote'
                       label='Note'
                       type={InputElementType.Textarea}
-                      style={{ size: 'small', fullWidth: true }}
                       size='small'
                       fullWidth
                     />
@@ -487,9 +499,6 @@ export const IpAddress: React.FC = () => {
                       name='bulkIpTags'
                       label='Tags'
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
-                      name='other'
-                      label='Other'
                       size='small'
                       fullWidth
                     />
