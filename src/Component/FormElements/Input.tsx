@@ -2,7 +2,13 @@ import { Grid } from '@mui/material';
 import { InputElement } from './InputElement';
 import { InputProps } from './type';
 
-export const Input: React.FC<InputProps> = ({ label, name, style }) => {
+export const Input: React.FC<InputProps> = ({
+  label,
+  name,
+  option,
+  style,
+  type,
+}) => {
   return (
     <Grid container justifyContent='flex-end' padding={2} spacing={1}>
       <Grid
@@ -17,7 +23,7 @@ export const Input: React.FC<InputProps> = ({ label, name, style }) => {
         {label}
       </Grid>
       <Grid item xs={8}>
-        <InputElement name={name} style={style} />
+        <InputElement name={name} style={style} type={type} option={option} />
       </Grid>
     </Grid>
   );
