@@ -23,52 +23,57 @@ export const natIpTabs = [
 ];
 
 export const nameSpace = [
-  { value: '1', label: 'Cleanup Namespace(1)' },
-  { value: '2', label: 'Cleanup Namespace Nautobot Baseball Stadiums(1)' },
-  { value: '3', label: 'Global' },
+  { value: 0, label: '' },
+  { value: 1, label: 'Cleanup Namespace(1)' },
+  { value: 2, label: 'Cleanup Namespace Nautobot Baseball Stadiums(1)' },
+  { value: 3, label: 'Global' },
 ];
 
 export const ipstatus = [
-  { value: '1', label: 'Anycast' },
-  { value: '2', label: 'CARP' },
-  { value: '3', label: 'GLBP' },
-  { value: '4', label: 'HSRP' },
-  { value: '5', label: 'Loopback' },
-  { value: '6', label: 'Secondary' },
-  { value: '7', label: 'VIP' },
-  { value: '8', label: 'VRRP' },
+  { value: 0, label: '' },
+  { value: 1, label: 'Anycast' },
+  { value: 2, label: 'CARP' },
+  { value: 3, label: 'GLBP' },
+  { value: 4, label: 'HSRP' },
+  { value: 5, label: 'Loopback' },
+  { value: 6, label: 'Secondary' },
+  { value: 7, label: 'VIP' },
+  { value: 8, label: 'VRRP' },
 ];
 
 export const ipRole = [
-  { value: '1', label: 'Active' },
-  { value: '2', label: 'Deprecated' },
-  { value: '3', label: 'NULL' },
-  { value: '4', label: 'Reserved' },
+  { value: 0, label: '' },
+  { value: 1, label: 'Active' },
+  { value: 2, label: 'Deprecated' },
+  { value: 3, label: 'NULL' },
+  { value: 4, label: 'Reserved' },
 ];
 
 export const ipType = [
-  { value: '1', label: 'DHCP' },
-  { value: '2', label: 'Host' },
-  { value: '3', label: 'SLAAC' },
+  { value: 0, label: '' },
+  { value: 1, label: 'DHCP' },
+  { value: 2, label: 'Host' },
+  { value: 3, label: 'SLAAC' },
 ];
 
-export const tenantGroup = [{ value: '1', label: 'ABC Holding Corp' }];
+export const tenantGroup = [{ value: 0, label: '' }, { value: 1, label: 'ABC Holding Corp' }];
 
-export const tenant = [{ value: '1', label: 'ABC LLC' }];
+export const tenant = [{ value: 0, label: '' }, { value: 1, label: 'ABC LLC' }];
 
-export const location = [{ value: '1', label: 'Africa' }];
+export const location = [{ value: 0, label: '' }, { value: 1, label: 'Africa' }];
 
-export const rack = [{ value: '1', label: 'ams01-101' }];
+export const rack = [{ value: 0, label: '' }, { value: 1, label: 'ams01-101' }];
 
-export const device = [{ value: '1', label: 'ams01-dist-01' }];
+export const device = [{ value: 0, label: '' }, { value: 1, label: 'ams01-dist-01' }];
 
-export const ip = [{ value: '1', label: '10.0.0.0/32' }];
+export const ip = [{ value: 0, label: '' }, { value: 1, label: '10.0.0.0/32' }];
 
-export const cluster = [{ value: '1', label: 'mycluster' }];
+export const cluster = [{ value: 0, label: '' }, { value: 1, label: 'mycluster' }];
 
-export const vm = [{ value: '1', label: 'myvm' }];
+export const vm = [{ value: 0, label: '' }, { value: 1, label: 'myvm' }];
 
 export const vrf = [
-  { value: '1', label: 'Cleanup Namespace (1): (global)' },
-  { value: '2', label: 'Global: (global)' },
+  { value: 0, label: '' },
+  { value: 1, label: 'Cleanup Namespace (1): (global)' },
+  { value: 2, label: 'Global: (global)' },
 ];

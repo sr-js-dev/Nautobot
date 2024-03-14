@@ -1,8 +1,10 @@
+import { ChangeEvent } from 'react';
+
 export type Size = 'medium' | 'small';
 
 export interface OptionType {
   label: string;
-  value: string;
+  value: number;
 }
 
 export interface InputProps {
@@ -12,6 +14,8 @@ export interface InputProps {
   fullWidth?: boolean;
   option?: OptionType[];
   type: string;
+  value?: any;
+  onChange?: (event: ChangeEvent<HTMLInputElement>, value: any) => void;
 }
 
 export interface InputElementProps {
@@ -20,4 +24,6 @@ export interface InputElementProps {
   option?: OptionType[];
   size?: 'small' | 'medium' 
   fullWidth?: boolean;
+  value?: any;
+  onChange?: (event: ChangeEvent<HTMLInputElement>, value: any) => void;
 }
