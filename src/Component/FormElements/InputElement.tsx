@@ -123,12 +123,7 @@ export const InputElement: React.FC<InputElementProps> = ({
           <Controller
             name={name}
             render={({ field }) => (
-              <Select
-                {...field}
-                {...register(name)}
-                size={size}
-                id={name}
-              >
+              <Select {...field} {...register(name)} size={size} id={name}>
                 {_options.map((item, index) => (
                   <MenuItem key={index} value={item.value}>
                     {item.label}
