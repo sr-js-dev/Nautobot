@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
-import { Box, Grid, Modal } from '@mui/material';
-
+import { Box, Grid, Modal, useStepContext, Typography } from '@mui/material';
+import { IpAddressColumns } from './Columns';
 import {
   DataTable,
   Card,
@@ -14,6 +14,7 @@ import {
 import { useAxios } from 'Lib/useAxios';
 import { API_URLS } from 'Utils/api-urls';
 import { QueryKeys } from 'Utils/query-key';
+import theme from '../../theme';
 
 type GetTableDataQueryKey = [string, number | null];
 
@@ -23,45 +24,28 @@ interface FormData {
   description: string;
   other: string;
 }
-
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
-  maxHeight: '80%',
   transform: 'translate(-50%, -50%)',
+  width: 400,
   bgcolor: 'background.paper',
-  border: '1px solid #000',
-  boxShadow: 8,
-  p: 4,
+  border: '2px solid #000',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
 export const IpAddress: React.FC = () => {
-  // Sample data
-  const rows = [
-    { id: 1, ipAddress: 'John', lastName: 'Doe', age: 30 },
-    { id: 2, ipAddress: 'Jane', lastName: 'Smith', age: 25 },
-    { id: 3, ipAddress: 'Bob', lastName: 'Johnson', age: 35 },
-  ];
-  // Columns definition
-  const columns = [
-    { field: 'ipAddress', headerName: 'IpAddress', width: 90 },
-    { field: 'nameSpace', headerName: 'Namespace', width: 150 },
-    { field: 'type', headerName: 'Type', width: 150 },
-    { field: 'status', headerName: 'Status', width: 90 },
-    { field: 'role', headerName: 'Role', width: 90 },
-    { field: 'tenant', headerName: 'Tenant', width: 90 },
-    { field: 'assigned', headerName: 'Assigned', width: 90 },
-    { field: 'dnsName', headerName: 'DNS Name', width: 90 },
-    { field: 'description', headerName: 'Description', width: 90 },
-  ];
-
   const [currentTablePage, setCurrentTablePage] = useState<number>(1);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const [ipTabvalue, setIpTabValue] = useState<string>('1');
   const [natIpTabvalue, setNatIpTabValue] = useState<string>('1');
+  const [ipAddressData, setIPaddressData] = useState<any>([]);
 
   const handleIpTabValue = (
     event: React.SyntheticEvent,
@@ -104,7 +88,22 @@ export const IpAddress: React.FC = () => {
   }): Promise<any> => {
     const [, currentPage] = queryKey;
     const data = await axios.get(`${API_URLS.GET_TABLE_DATA}${currentPage}`);
-    return data;
+    const ipAddressDataList = data.data.results?.map((item: any, index: number) => {
+      let ipAddress: any = {
+        id: index,
+        ipAddress: item.address ?? '',
+        nameSpace: item.natural_slug ? item.natural_slug.split('_')[0] : '',
+        type: item.type ?? '',
+        status: item.status ? item.status.name ?? 'Null' : 'Null',
+        role: item.role ??  '',
+        tenant: item.tenant ? item.tenant.name ?? '' : '',
+        assigned: item.status.name === 'Active' ? true : false,
+        dnsName: item.dns_name ?? '',
+        description: item.description ?? ''
+      }
+      return ipAddress
+    });
+    return ipAddressDataList;
   };
 
   const { data, isError, error } = useQuery({
@@ -115,7 +114,8 @@ export const IpAddress: React.FC = () => {
 
   useEffect(() => {
     if (isError) console.log(error);
-  }, [isError, error]);
+    if (data) setIPaddressData(data);
+  }, [isError, error, data, setIPaddressData]);
 
   return (
     <div>
@@ -124,22 +124,22 @@ export const IpAddress: React.FC = () => {
         justifyContent='center' // Horizontally center the items
         alignItems='center' // Vertically center the items
         style={{ minHeight: '100vh' }} // Set minimum height to occupy full viewport height
+        minHeight='100vh'
         direction='column'
         gap={2}
       >
-        <Grid item justifyContent='flex-start' style={{ width: '980px' }}>
-          <Button
-            color='secondary'
-            variant='contained'
-            size='large'
-            style={{ float: 'right' }}
-            onClick={handleOpenModal}
-          >
-            ADD
-          </Button>
-        </Grid>
-        <Grid item>
-          <DataTable rows={rows} columns={columns} />
+        <Grid item display={'flex'} flexDirection={'column'}>
+          <Box display={'flex'} justifyContent={'end'}>
+            <Button
+              color='secondary'
+              variant='contained'
+              size='large'
+              onClick={handleOpenModal}
+            >
+              ADD
+            </Button>
+          </Box>
+          <DataTable rows={ipAddressData} columns={IpAddressColumns} />
         </Grid>
       </Grid>
       <Modal
@@ -148,7 +148,7 @@ export const IpAddress: React.FC = () => {
         aria-labelledby='scrollable-modal-title'
         aria-describedby='scrollable-modal-description'
       >
-        <Box sx={{ ...style, width: 800 }}>
+        <Box sx={{ ...style, width: 800 }} >
           <TabContext
             tabs={[
               { label: 'New IP', title: 'Add a new IP address', value: '1' },
@@ -166,24 +166,22 @@ export const IpAddress: React.FC = () => {
               <FormProvider {...methods}>
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px',
-                  }}
+                  // className={classes.form}
                 >
                   <Card cardName='IP Address'>
                     <Input
                       name='address'
                       label='Address'
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='Tenancy'>
                     <Input
                       name='address'
                       label='Address'
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='NAT IP (Inside)'>
@@ -209,21 +207,24 @@ export const IpAddress: React.FC = () => {
                         <Input
                           name='description'
                           label='Description'
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                       </TabPanel>
                       <TabPanel value='2'>
                         <Input
                           name='description'
                           label='Description'
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                       </TabPanel>
                       <TabPanel value='3'>
                         <Input
                           name='description'
                           label='Description'
-                          style={{ size: 'small', fullWidth: true }}
+                          size='small'
+                          fullWidth
                         />
                       </TabPanel>
                     </TabContext>
@@ -232,14 +233,16 @@ export const IpAddress: React.FC = () => {
                     <Input
                       name='description'
                       label='Description'
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='Tags'>
                     <Input
                       name='other'
                       label='Other'
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                     <input type='submit' />
                   </Card>
