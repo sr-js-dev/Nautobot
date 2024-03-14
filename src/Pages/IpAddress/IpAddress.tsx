@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
-import { Box, Grid, Modal } from '@mui/material';
-
+import { Box, Grid, Modal, useStepContext, Typography } from '@mui/material';
+import { IpAddressColumns } from './Columns';
 import {
   DataTable,
   Card,
@@ -32,6 +32,7 @@ import { useAxios } from 'Lib/useAxios';
 import { API_URLS } from 'Utils/api-urls';
 import { QueryKeys } from 'Utils/query-key';
 import { InputElementType } from 'Utils/input-element-type';
+import theme from '../../theme';
 
 type GetTableDataQueryKey = [string, number | null];
 
@@ -68,45 +69,28 @@ interface FormData {
   bulkIpNote: string;
   bulkIpTags: string;
 }
-
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
-  maxHeight: '80%',
   transform: 'translate(-50%, -50%)',
+  width: 400,
   bgcolor: 'background.paper',
-  border: '1px solid #000',
-  boxShadow: 8,
-  p: 4,
+  border: '2px solid #000',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
 export const IpAddress: React.FC = () => {
-  // Sample data
-  const rows = [
-    { id: 1, ipAddress: 'John', lastName: 'Doe', age: 30 },
-    { id: 2, ipAddress: 'Jane', lastName: 'Smith', age: 25 },
-    { id: 3, ipAddress: 'Bob', lastName: 'Johnson', age: 35 },
-  ];
-  // Columns definition
-  const columns = [
-    { field: 'ipAddress', headerName: 'IpAddress', width: 90 },
-    { field: 'nameSpace', headerName: 'Namespace', width: 150 },
-    { field: 'type', headerName: 'Type', width: 150 },
-    { field: 'status', headerName: 'Status', width: 90 },
-    { field: 'role', headerName: 'Role', width: 90 },
-    { field: 'tenant', headerName: 'Tenant', width: 90 },
-    { field: 'assigned', headerName: 'Assigned', width: 90 },
-    { field: 'dnsName', headerName: 'DNS Name', width: 90 },
-    { field: 'description', headerName: 'Description', width: 90 },
-  ];
-
   const [currentTablePage, setCurrentTablePage] = useState<number>(1);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const [ipTabvalue, setIpTabValue] = useState<string>('1');
   const [natIpTabvalue, setNatIpTabValue] = useState<string>('1');
+  const [ipAddressData, setIPaddressData] = useState<any>([]);
 
   const handleIpTabValue = (
     event: React.SyntheticEvent,
@@ -177,18 +161,34 @@ export const IpAddress: React.FC = () => {
   }): Promise<any> => {
     const [, currentPage] = queryKey;
     const data = await axios.get(`${API_URLS.GET_TABLE_DATA}${currentPage}`);
-    return data;
+    const ipAddressDataList = data.data.results?.map((item: any, index: number) => {
+      let ipAddress: any = {
+        id: index,
+        ipAddress: item.address ?? '',
+        nameSpace: item.natural_slug ? item.natural_slug.split('_')[0] : '',
+        type: item.type ?? '',
+        status: item.status ? item.status.name ?? 'Null' : 'Null',
+        role: item.role ??  '',
+        tenant: item.tenant ? item.tenant.name ?? '' : '',
+        assigned: item.status.name === 'Active' ? true : false,
+        dnsName: item.dns_name ?? '',
+        description: item.description ?? ''
+      }
+      return ipAddress
+    });
+    return ipAddressDataList;
   };
 
-  // const { data, isError, error } = useQuery({
-  //   queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage],
-  //   queryFn: () =>
-  //     getTableData({ queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage] }),
-  // });
+  const { data, isError, error } = useQuery({
+    queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage],
+    queryFn: () =>
+      getTableData({ queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage] }),
+  });
 
-  // useEffect(() => {
-  //   if (isError) console.log(error);
-  // }, [isError, error]);
+  useEffect(() => {
+    if (isError) console.log(error);
+    if (data) setIPaddressData(data);
+  }, [isError, error, data, setIPaddressData]);
 
   return (
     <div>
@@ -197,22 +197,22 @@ export const IpAddress: React.FC = () => {
         justifyContent='center' // Horizontally center the items
         alignItems='center' // Vertically center the items
         style={{ minHeight: '100vh' }} // Set minimum height to occupy full viewport height
+        minHeight='100vh'
         direction='column'
         gap={2}
       >
-        <Grid item justifyContent='flex-start' style={{ width: '980px' }}>
-          <Button
-            color='secondary'
-            variant='contained'
-            size='large'
-            style={{ float: 'right' }}
-            onClick={handleOpenModal}
-          >
-            ADD
-          </Button>
-        </Grid>
-        <Grid item>
-          <DataTable rows={rows} columns={columns} />
+        <Grid item display={'flex'} flexDirection={'column'}>
+          <Box display={'flex'} justifyContent={'end'}>
+            <Button
+              color='secondary'
+              variant='contained'
+              size='large'
+              onClick={handleOpenModal}
+            >
+              ADD
+            </Button>
+          </Box>
+          <DataTable rows={ipAddressData} columns={IpAddressColumns} />
         </Grid>
       </Grid>
       <Modal
@@ -221,6 +221,7 @@ export const IpAddress: React.FC = () => {
         aria-labelledby='scrollable-modal-title'
         aria-describedby='scrollable-modal-description'
       >
+
         <Box sx={{ ...style, width: 800 }}>
           <FormProvider {...methods}>
             <TabContext
@@ -231,6 +232,7 @@ export const IpAddress: React.FC = () => {
             >
               <form onSubmit={handleSubmit(onSubmit)}>
                 <TabPanel value='1'>
+
                   <Card cardName='IP Address'>
                     <Input
                       name='newIpAddress'
@@ -278,7 +280,8 @@ export const IpAddress: React.FC = () => {
                       name='newIpDescription'
                       label='Description'
                       type={InputElementType.TextField}
-                      style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='Tenancy'>
@@ -294,7 +297,10 @@ export const IpAddress: React.FC = () => {
                       label='Tenant'
                       option={tenant}
                       type={InputElementType.Autocomplete}
-                      style={{ size: 'small', fullWidth: true }}
+                      name='address'
+                      label='Address'
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='NAT IP (Inside)'>
@@ -323,14 +329,16 @@ export const IpAddress: React.FC = () => {
                           label='Device'
                           option={device}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
                         />
                         <Input
                           name='newIpDeviceIp'
                           label='IP Address'
                           option={ip}
                           type={InputElementType.Autocomplete}
-                          style={{ size: 'small', fullWidth: true }}
+                          name='description'
+                          label='Description'
+                          size='small'
+                          fullWidth
                         />
                       </TabPanel>
                       <TabPanel value='2'>
@@ -354,6 +362,10 @@ export const IpAddress: React.FC = () => {
                           option={ip}
                           type={InputElementType.Autocomplete}
                           style={{ size: 'small', fullWidth: true }}
+                          name='description'
+                          label='Description'
+                          size='small'
+                          fullWidth
                         />
                       </TabPanel>
                       <TabPanel value='3'>
@@ -370,6 +382,10 @@ export const IpAddress: React.FC = () => {
                           option={ip}
                           type={InputElementType.Autocomplete}
                           style={{ size: 'small', fullWidth: true }}
+                          name='description'
+                          label='Description'
+                          size='small'
+                          fullWidth
                         />
                       </TabPanel>
                     </TabContext>
@@ -462,6 +478,8 @@ export const IpAddress: React.FC = () => {
                       label='Note'
                       type={InputElementType.Textarea}
                       style={{ size: 'small', fullWidth: true }}
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                   <Card cardName='Tags'>
@@ -470,6 +488,10 @@ export const IpAddress: React.FC = () => {
                       label='Tags'
                       type={InputElementType.Autocomplete}
                       style={{ size: 'small', fullWidth: true }}
+                      name='other'
+                      label='Other'
+                      size='small'
+                      fullWidth
                     />
                   </Card>
                 </TabPanel>

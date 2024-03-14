@@ -52,5 +52,6 @@
   },
   "devDependencies": {
     "sass": "^1.71.1"
-  }
+  },
+  "proxy": "https://demo.nautobot.com"
 }

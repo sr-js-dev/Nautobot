@@ -1,29 +1,15 @@
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { InputElement } from './InputElement';
 import { InputProps } from './type';
 
-export const Input: React.FC<InputProps> = ({
-  label,
-  name,
-  option,
-  style,
-  type,
-}) => {
+export const Input: React.FC<InputProps> = ({ label, name, size, fullWidth, option, type }) => {
   return (
-    <Grid container justifyContent='flex-end' padding={2} spacing={1}>
-      <Grid
-        item
-        xs={4}
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-        }}
-      >
-        {label}
+    <Grid container spacing={1} alignItems="center">
+      <Grid item xs={4}>
+        <Typography align='right'>{label}</Typography>
       </Grid>
       <Grid item xs={8}>
-        <InputElement name={name} style={style} type={type} option={option} />
+        <InputElement name={name} ssize={size} fullWidth={fullWidth} type={type} option={option} />
       </Grid>
     </Grid>
   );

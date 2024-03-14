@@ -4,12 +4,13 @@ import { CardProps } from './type';
 export const Card: React.FC<CardProps> = ({ cardName, children }) => {
   return (
     <MuiCard>
-      <CardContent style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0 }}>
+      <CardContent sx={{ paddingY: 0, paddingX: 0 }}>
         <Typography
-          fontSize={14}
-          color='#FFF'
+          variant='subtitle1'
+          color='text.primary'
           bgcolor='#2E363C'
           padding={1}
+          borderRadius='4px 4px 0 0'
           gutterBottom
         >
           {cardName}

@@ -8,20 +8,16 @@ export interface OptionType {
 export interface InputProps {
   name: string;
   label: string;
+  size?: 'small' | 'medium'; 
+  fullWidth?: boolean;
   option?: OptionType[];
   type: string;
-  style: {
-    size: Size;
-    fullWidth: boolean;
-  };
 }
 
 export interface InputElementProps {
   name: string;
   type: string;
   option?: OptionType[];
-  style: {
-    size: Size;
-    fullWidth: boolean;
-  };
+  size?: 'small' | 'medium' 
+  fullWidth?: boolean;
 }
