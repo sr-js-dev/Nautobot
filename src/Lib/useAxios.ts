@@ -3,13 +3,13 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 export function useAxios(timeout: number = 500000000) {
   const token = process.env.REACT_APP_API_TOKEN;
   const headers = {
-    'Accept': 'application/json',
-    'Authorization': `Token ${token}`,
+    Accept: 'application/json',
+    Authorization: `Token ${token}`,
   };
   const config = {
     baseURL: `/api`,
     timeout: timeout,
-    headers: headers
+    headers: headers,
   };
 
   const axiosInstance = axios.create(config);

@@ -1,4 +1,4 @@
-import { Card as MuiCard, CardContent, Typography } from '@mui/material';
+import { Box, Card as MuiCard, CardContent, Typography } from '@mui/material';
 import { CardProps } from './type';
 
 export const Card: React.FC<CardProps> = ({ cardName, children }) => {
@@ -15,7 +15,9 @@ export const Card: React.FC<CardProps> = ({ cardName, children }) => {
         >
           {cardName}
         </Typography>
-        {children}
+        <Box display={'flex'} flexDirection={'column'} marginTop={2} gap={3}>
+          {children}
+        </Box>
       </CardContent>
     </MuiCard>
   );

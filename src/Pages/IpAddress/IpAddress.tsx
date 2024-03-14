@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Grid, Modal, useStepContext, Typography } from '@mui/material';
 import { IpAddressColumns } from './Columns';
@@ -32,7 +32,6 @@ import { useAxios } from 'Lib/useAxios';
 import { API_URLS } from 'Utils/api-urls';
 import { QueryKeys } from 'Utils/query-key';
 import { InputElementType } from 'Utils/input-element-type';
-import theme from '../../theme';
 
 type GetTableDataQueryKey = [string, number | null];
 
@@ -161,21 +160,23 @@ export const IpAddress: React.FC = () => {
   }): Promise<any> => {
     const [, currentPage] = queryKey;
     const data = await axios.get(`${API_URLS.GET_TABLE_DATA}${currentPage}`);
-    const ipAddressDataList = data.data.results?.map((item: any, index: number) => {
-      let ipAddress: any = {
-        id: index,
-        ipAddress: item.address ?? '',
-        nameSpace: item.natural_slug ? item.natural_slug.split('_')[0] : '',
-        type: item.type ?? '',
-        status: item.status ? item.status.name ?? 'Null' : 'Null',
-        role: item.role ??  '',
-        tenant: item.tenant ? item.tenant.name ?? '' : '',
-        assigned: item.status.name === 'Active' ? true : false,
-        dnsName: item.dns_name ?? '',
-        description: item.description ?? ''
+    const ipAddressDataList = data.data.results?.map(
+      (item: any, index: number) => {
+        let ipAddress: any = {
+          id: index,
+          ipAddress: item.address ?? '',
+          nameSpace: item.natural_slug ? item.natural_slug.split('_')[0] : '',
+          type: item.type ?? '',
+          status: item.status ? item.status.name ?? 'Null' : 'Null',
+          role: item.role ?? '',
+          tenant: item.tenant ? item.tenant.name ?? '' : '',
+          assigned: item.status.name === 'Active' ? true : false,
+          dnsName: item.dns_name ?? '',
+          description: item.description ?? '',
+        };
+        return ipAddress;
       }
-      return ipAddress
-    });
+    );
     return ipAddressDataList;
   };
 
@@ -221,7 +222,6 @@ export const IpAddress: React.FC = () => {
         aria-labelledby='scrollable-modal-title'
         aria-describedby='scrollable-modal-description'
       >
-
         <Box sx={{ ...style, width: 800 }}>
           <FormProvider {...methods}>
             <TabContext
@@ -232,7 +232,6 @@ export const IpAddress: React.FC = () => {
             >
               <form onSubmit={handleSubmit(onSubmit)}>
                 <TabPanel value='1'>
-
                   <Card cardName='IP Address'>
                     <Input
                       name='newIpAddress'
@@ -241,8 +240,6 @@ export const IpAddress: React.FC = () => {
                       size='small'
                       fullWidth
                     />
-                    <input type='submit' />
-
                     <Input
                       name='newIpNamespace'
                       label='Namespace'
@@ -315,80 +312,88 @@ export const IpAddress: React.FC = () => {
                       handleChange={handleNatIpTabValue}
                     >
                       <TabPanel value='1'>
-                        <Input
-                          name='newIpLocation'
-                          label='Location'
-                          option={location}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
-                        <Input
-                          name='newIpRack'
-                          label='Rack'
-                          option={rack}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
-                        <Input
-                          name='newIpDevice'
-                          label='Device'
-                          option={device}
-                          type={InputElementType.Autocomplete}
-                        />
-                        <Input
-                          name='newIpDeviceIp'
-                          label='IP Address'
-                          option={ip}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
+                        <Box display={'flex'} flexDirection={'column'} gap={2}>
+                          <Input
+                            name='newIpLocation'
+                            label='Location'
+                            option={location}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                          <Input
+                            name='newIpRack'
+                            label='Rack'
+                            option={rack}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                          <Input
+                            name='newIpDevice'
+                            label='Device'
+                            option={device}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                          <Input
+                            name='newIpDeviceIp'
+                            label='IP Address'
+                            option={ip}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                        </Box>
                       </TabPanel>
                       <TabPanel value='2'>
-                        <Input
-                          name='newIpCluster'
-                          label='Cluster'
-                          option={cluster}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
-                        <Input
-                          name='newIpVm'
-                          label='Virtual Machine'
-                          option={vm}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
-                        <Input
-                          name='newIpVmIp'
-                          label='IP Address'
-                          option={ip}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
+                        <Box display={'flex'} flexDirection={'column'} gap={2}>
+                          <Input
+                            name='newIpCluster'
+                            label='Cluster'
+                            option={cluster}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                          <Input
+                            name='newIpVm'
+                            label='Virtual Machine'
+                            option={vm}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                          <Input
+                            name='newIpVmIp'
+                            label='IP Address'
+                            option={ip}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                        </Box>
                       </TabPanel>
                       <TabPanel value='3'>
-                        <Input
-                          name='vrf'
-                          label='VRF'
-                          option={vrf}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
-                        <Input
-                          name='ipAddress'
-                          label='IP Address'
-                          option={ip}
-                          type={InputElementType.Autocomplete}
-                          size='small'
-                          fullWidth
-                        />
+                        <Box display={'flex'} flexDirection={'column'} gap={2}>
+                          <Input
+                            name='vrf'
+                            label='VRF'
+                            option={vrf}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                          <Input
+                            name='ipAddress'
+                            label='IP Address'
+                            option={ip}
+                            type={InputElementType.Autocomplete}
+                            size='small'
+                            fullWidth
+                          />
+                        </Box>
                       </TabPanel>
                     </TabContext>
                   </Card>
@@ -504,6 +509,16 @@ export const IpAddress: React.FC = () => {
                     />
                   </Card>
                 </TabPanel>
+                <Box display={'flex'} justifyContent={'end'}>
+                  <Button
+                    type='submit'
+                    color='secondary'
+                    variant='contained'
+                    size='large'
+                  >
+                    Submit
+                  </Button>
+                </Box>
               </form>
             </TabContext>
           </FormProvider>

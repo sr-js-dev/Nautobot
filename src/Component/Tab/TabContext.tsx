@@ -13,8 +13,16 @@ export const TabContext: React.FC<TabContextProps> = ({
   const tabWithTitle = tabs.find((tab) => tab.value === value)?.title;
   return (
     <MuiTabContext value={value}>
-      <Box display='flex' flexDirection='column' height={scrollY ? '500px' : 'auto'}>
-        <Box borderBottom={1} borderColor="divider" sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box
+        display='flex'
+        flexDirection='column'
+        height={scrollY ? '500px' : 'auto'}
+      >
+        <Box
+          borderBottom={1}
+          borderColor='divider'
+          sx={{ borderBottom: 1, borderColor: 'divider' }}
+        >
           {tabWithTitle && (
             <Typography>
               {tabs.map((tab) => tab.value === value && tab.title)}

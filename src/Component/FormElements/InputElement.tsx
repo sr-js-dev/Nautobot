@@ -16,7 +16,7 @@ export const InputElement: React.FC<InputElementProps> = ({
   type,
   option,
   size,
-  fullWidth
+  fullWidth,
 }) => {
   const blue = {
     100: '#DAECFF',
@@ -113,12 +113,7 @@ export const InputElement: React.FC<InputElementProps> = ({
           <Controller
             name={name}
             render={({ field }) => (
-              <Select
-                {...field}
-                {...register(name)}
-                size={size}
-                id={name}
-              >
+              <Select {...field} {...register(name)} size={size} id={name}>
                 {_options.map((item, index) => (
                   <MenuItem key={index} value={item.value}>
                     {item.label}
