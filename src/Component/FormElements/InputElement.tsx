@@ -17,6 +17,8 @@ export const InputElement: React.FC<InputElementProps> = ({
   option,
   size,
   fullWidth,
+  value,
+  onChange,
 }) => {
   const blue = {
     100: '#DAECFF',
@@ -71,12 +73,14 @@ export const InputElement: React.FC<InputElementProps> = ({
   `
   );
 
-  const { register, setValue, getValues } = useFormContext();
+  const { register, setValue, getValues, watch } = useFormContext();
 
   let InputComponent;
   const _options = option || [];
-
-  const formData = getValues();
+  
+  const getOptionLabel = (option: any) => {
+    return String(option.label); // Convert option to string
+  };
 
   switch (type) {
     case 'text-field':
@@ -96,14 +100,20 @@ export const InputElement: React.FC<InputElementProps> = ({
       break;
     case 'autocomplete':
       InputComponent = (
-        <Autocomplete
-          disablePortal
-          id={name}
-          size={size}
-          options={_options}
-          getOptionLabel={(option) => option.label}
-          onChange={(event, option) => setValue(name, option)}
-          renderInput={(params) => <TextField {...params} />}
+        <Controller
+          name={name}
+          render={({ field }) => (
+            <Autocomplete
+              value={watch(name)!=='' ? watch(name) : { value: 0, label: '' }}
+              disablePortal
+              id={name}
+              size={size}
+              options={_options}
+              getOptionLabel={getOptionLabel}
+              onChange={(event, option) => setValue(name, option)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          )}
         />
       );
       break;

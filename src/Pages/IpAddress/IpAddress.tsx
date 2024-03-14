@@ -217,7 +217,7 @@ export const IpAddress: React.FC = () => {
         </Grid>
       </Grid>
       <Modal
-        open={true}
+        open={openModal}
         onClose={handleCloseModal}
         aria-labelledby='scrollable-modal-title'
         aria-describedby='scrollable-modal-description'
