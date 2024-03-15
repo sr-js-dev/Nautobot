@@ -73,7 +73,7 @@ export const cluster = [{ value: 0, label: '' }, { value: 1, label: 'mycluster' 
 export const vm = [{ value: 0, label: '' }, { value: 1, label: 'myvm' }];
 
 export const vrf = [
-  { value: 0, label: '' },
+  { value: 0, label: '----' },
   { value: 1, label: 'Cleanup Namespace (1): (global)' },
   { value: 2, label: 'Global: (global)' },
 ];

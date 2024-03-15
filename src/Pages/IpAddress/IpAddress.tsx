@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, QueryClient } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Grid, Modal } from '@mui/material';
 import { IpAddressColumns } from './Columns';
@@ -90,12 +90,12 @@ export const IpAddress: React.FC = () => {
     { page: 0, pageSize: 25 }
   );
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
   const [ipTabvalue, setIpTabValue] = useState<string>('1');
   const [natIpTabvalue, setNatIpTabValue] = useState<string>('1');
   const [ipAddressData, setIPaddressData] = useState<any>([]);
   const [rowCount, setRowCount] = useState<number>(0);
+
+  const queryClient = new QueryClient();
 
   const handleIpTabValue = (
     event: React.SyntheticEvent,
@@ -151,277 +151,7 @@ export const IpAddress: React.FC = () => {
     },
   });
 
-  const { getValues, handleSubmit } = methods;
-
-  const formData = getValues();
-
-  // const params = {
-  //   address: formData.newIpAddress,
-  //   namespace: {
-  //     id: formData.newIpNamespace.value.toString,
-  //     object_type: formData.newIpNamespace.label,
-  //     url: 'string',
-  //   },
-  //   type: formData.newIpType,
-  //   dns_name: formData.newIpDns,
-  //   description: formData.newIpDescription,
-  //   status: {
-  //     id: formData.newIpStatus.value.toString,
-  //     object_type: formData.newIpStatus.label,
-  //     url: 'string',
-  //   },
-  //   role: {
-  //     id: formData.newIpRole.value.toString,
-  //     object_type: formData.newIpRole.label,
-  //     url: 'string',
-  //   },
-  //   parent: {
-  //     id: 'string',
-  //     object_type: 'app_label.modelname',
-  //     url: 'string',
-  //   },
-  //   tenant: {
-  //     id: formData.newIpTenant.value.toString,
-  //     object_type: formData.newIpTenant.label,
-  //     url: 'string',
-  //   },
-  //   nat_inside: {
-  //     id: 'string',
-  //     object_type: 'app_label.modelname',
-  //     url: 'string',
-  //   },
-  //   tags: [
-  //     {
-  //       id: formData.newIpTags.value.toString,
-  //       object_type: formData.newIpTags.label,
-  //       url: 'string',
-  //     },
-  //   ],
-  //   custom_fields: {
-  //     additionalProp1: 'string',
-  //     additionalProp2: 'string',
-  //     additionalProp3: 'string',
-  //   },
-  //   relationships: {
-  //     additionalProp1: {
-  //       source: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //       destination: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //       peer: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //     },
-  //     additionalProp2: {
-  //       source: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //       destination: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //       peer: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //     },
-  //     additionalProp3: {
-  //       source: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //       destination: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //       peer: {
-  //         objects: [
-  //           {
-  //             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  //             additionalProp1: {},
-  //           },
-  //         ],
-  //       },
-  //     },
-  //   },
-  // };
-  const params = {
-    address: 'string',
-    namespace: {
-      id: 'string',
-      object_type: 'app_label.modelname',
-      url: 'string',
-    },
-    type: 'dhcp',
-    dns_name: 'pROouLQOkGbNo14Vq_I',
-    description: 'string',
-    status: {
-      id: 'string',
-      object_type: 'app_label.modelname',
-      url: 'string',
-    },
-    role: {
-      id: 'string',
-      object_type: 'app_label.modelname',
-      url: 'string',
-    },
-    parent: {
-      id: 'string',
-      object_type: 'app_label.modelname',
-      url: 'string',
-    },
-    tenant: {
-      id: 'string',
-      object_type: 'app_label.modelname',
-      url: 'string',
-    },
-    nat_inside: {
-      id: 'string',
-      object_type: 'app_label.modelname',
-      url: 'string',
-    },
-    tags: [
-      {
-        id: 'string',
-        object_type: 'app_label.modelname',
-        url: 'string',
-      },
-    ],
-    custom_fields: {
-      additionalProp1: 'string',
-      additionalProp2: 'string',
-      additionalProp3: 'string',
-    },
-    relationships: {
-      additionalProp1: {
-        source: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-        destination: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-        peer: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-      },
-      additionalProp2: {
-        source: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-        destination: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-        peer: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-      },
-      additionalProp3: {
-        source: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-        destination: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-        peer: {
-          objects: [
-            {
-              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-              additionalProp1: {},
-            },
-          ],
-        },
-      },
-    },
-  };
-  const onSubmit = () => {
-    const formData = getValues();
-    console.log('formData', formData);
-    addTableData.mutate();
-  };
-
-  const addTableData = useMutation({
-    mutationFn: () => {
-      return axios.post(API_URLS.ADD_TABLE_DATA, params);
-    },
-  });
+  const { getValues, handleSubmit, reset } = methods;
 
   // UseQuery hook
   const getTableData = async ({
@@ -436,6 +166,7 @@ export const IpAddress: React.FC = () => {
       }`
     );
     setRowCount(data.data.count);
+
     const ipAddressDataList = data.data.results?.map(
       (item: any, index: number) => {
         let ipAddress: any = {
@@ -462,11 +193,163 @@ export const IpAddress: React.FC = () => {
       getTableData({ queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage] }),
   });
 
+  const onSubmit = () => {
+    const formData = getValues();
+    const params = {
+      address: formData.newIpAddress,
+      namespace: {
+        id: formData.newIpNamespace.value.toString() ?? '',
+        object_type: formData.newIpNamespace.label,
+        url: 'string',
+      },
+      type: formData.newIpType,
+      dns_name: formData.newIpDns,
+      description: formData.newIpDescription,
+      status: {
+        id: formData.newIpStatus.value,
+        object_type: formData.newIpStatus.label,
+        url: 'string',
+      },
+      role: {
+        id: formData.newIpRole.value,
+        object_type: formData.newIpRole.label,
+        url: 'string',
+      },
+      parent: {
+        id: 'string',
+        object_type: 'app_label.modelname',
+        url: 'string',
+      },
+      tenant: {
+        id: formData.newIpTenant.value,
+        object_type: formData.newIpTenant.label,
+        url: 'string',
+      },
+      nat_inside: {
+        id: 'string',
+        object_type: 'app_label.modelname',
+        url: 'string',
+      },
+      tags: [
+        {
+          id: formData.newIpTags.value,
+          object_type: formData.newIpTags.label,
+          url: 'string',
+        },
+      ],
+      custom_fields: {
+        additionalProp1: 'string',
+        additionalProp2: 'string',
+        additionalProp3: 'string',
+      },
+      relationships: {
+        additionalProp1: {
+          source: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+          destination: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+          peer: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+        },
+        additionalProp2: {
+          source: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+          destination: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+          peer: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+        },
+        additionalProp3: {
+          source: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+          destination: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+          peer: {
+            objects: [
+              {
+                id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+                additionalProp1: {},
+              },
+            ],
+          },
+        },
+      },
+    };
+    mutation.mutate(params);
+  };
+
+  const mutation = useMutation({
+    mutationFn: (params: any) => {
+      return axios.post(`${API_URLS.ADD_TABLE_DATA}?format=json`, params);
+    },
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: [QueryKeys.GET_TABLE_DATA, currentTablePage], type: 'active' });
+    },
+    onError: (error, variables) => {
+      // An error happened!
+      console.log(error)
+    },
+  });
+
   useEffect(() => {
     if (isError) console.log(error);
-    console.log('aaaa', data);
     if (data) setIPaddressData(data);
   }, [isError, error, data, setIPaddressData]);
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    reset();
+  }
+
+  const handleOpenModal = () => setOpenModal(true);
 
   return (
     <div>

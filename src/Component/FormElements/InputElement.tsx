@@ -80,7 +80,7 @@ export const InputElement: React.FC<InputElementProps> = ({
           name={name}
           render={({ field }) => (
             <Autocomplete
-              value={watch(name)!=='' ? watch(name) : { value: 0, label: '-----' }}
+              value={watch(name) && Object.keys(watch(name)).length !== 0 ? watch(name) : { value: 0, label: '-----' }}
               disablePortal
               id={name}
               size={size}
