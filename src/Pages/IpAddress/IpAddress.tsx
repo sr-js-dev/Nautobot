@@ -37,12 +37,14 @@ import { GridPaginationModel } from '@mui/x-data-grid';
 
 type GetTableDataQueryKey = [string, any | null];
 
+type paramType = { value: number; label: string };
+
 interface FormData {
   newIpAddress: string;
-  newIpNamespace: string;
+  newIpNamespace: paramType;
   newIpType: string;
-  newIpStatus: string;
-  newIpRole: string;
+  newIpStatus: paramType;
+  newIpRole: paramType;
   newIpDns: string;
   newIpDescription: string;
   newIpTenantGroup: string;
@@ -115,10 +117,10 @@ export const IpAddress: React.FC = () => {
   const methods = useForm<FormData>({
     defaultValues: {
       newIpAddress: '',
-      newIpNamespace: '',
+      newIpNamespace: {},
       newIpType: '',
-      newIpStatus: '',
-      newIpRole: '',
+      newIpStatus: {},
+      newIpRole: {},
       newIpDns: '',
       newIpDescription: '',
       newIpTenantGroup: '',
@@ -150,10 +152,147 @@ export const IpAddress: React.FC = () => {
 
   const { getValues, handleSubmit } = methods;
 
+  const formData = getValues();
+
+  const params = {
+    address: formData.newIpAddress,
+    namespace: {
+      id: formData.newIpNamespace.value,
+      object_type: formData.newIpNamespace.label,
+      url: 'string',
+    },
+    type: formData.newIpType,
+    dns_name: formData.newIpDns,
+    description: formData.newIpDescription,
+    status: {
+      id: formData.newIpStatus.value,
+      object_type: formData.newIpStatus.label,
+      url: 'string',
+    },
+    role: {
+      id: formData.newIpRole.value,
+      object_type: formData.newIpRole.label,
+      url: 'string',
+    },
+    parent: {
+      id: 'string',
+      object_type: 'app_label.modelname',
+      url: 'string',
+    },
+    tenant: {
+      id: 'string',
+      object_type: 'app_label.modelname',
+      url: 'string',
+    },
+    nat_inside: {
+      id: 'string',
+      object_type: 'app_label.modelname',
+      url: 'string',
+    },
+    tags: [
+      {
+        id: 'string',
+        object_type: 'app_label.modelname',
+        url: 'string',
+      },
+    ],
+    custom_fields: {
+      additionalProp1: 'string',
+      additionalProp2: 'string',
+      additionalProp3: 'string',
+    },
+    relationships: {
+      additionalProp1: {
+        source: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+        destination: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+        peer: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+      },
+      additionalProp2: {
+        source: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+        destination: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+        peer: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+      },
+      additionalProp3: {
+        source: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+        destination: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+        peer: {
+          objects: [
+            {
+              id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              additionalProp1: {},
+            },
+          ],
+        },
+      },
+    },
+  };
   const onSubmit = () => {
     const formData = getValues();
     console.log('formData', formData);
+    addTableData.mutate();
   };
+
+  const addTableData = useMutation({
+    mutationFn: () => {
+      return axios.post(API_URLS.ADD_TABLE_DATA, params);
+    },
+  });
 
   // UseQuery hook
   const getTableData = async ({
